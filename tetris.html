@@ -1005,6 +1005,25 @@
                 nextPieceEl.innerHTML = '';
                 return;
             }
+            
+            // Hidden next piece - show "???" until level 5
+            if (level < 5) {
+                nextPieceEl.style.gridTemplateColumns = `repeat(4, 20px)`;
+                nextPieceEl.innerHTML = '';
+                for (let r = 0; r < 4; r++) {
+                    for (let c = 0; c < 4; c++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        if ((r === 1 && c === 1) || (r === 1 && c === 2) || (r === 2 && c === 1)) {
+                            cell.classList.add('filled', 'i');
+                            cell.style.opacity = '0.3';
+                        }
+                        nextPieceEl.appendChild(cell);
+                    }
+                }
+                return;
+            }
+            
             const tetromino = TETROMINOES[nextPiece];
             nextPieceEl.style.gridTemplateColumns = `repeat(4, 20px)`;
             nextPieceEl.innerHTML = '';
