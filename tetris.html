@@ -137,6 +137,12 @@
         .cell.j { background: var(--neon-blue); color: var(--neon-blue); }
         .cell.l { background: var(--neon-orange); color: var(--neon-orange); }
         
+        .cell.garbage {
+            background: #555555;
+            color: #555555;
+            border: 1px solid #333;
+        }
+        
         .cell.ghost {
             opacity: 0.3;
             box-shadow: none;
@@ -869,6 +875,15 @@
             render();
         }
         
+        // Add garbage line from bottom
+        function addGarbageLine() {
+            grid.shift();
+            const garbageRow = Array(COLS).fill('garbage');
+            const hole = Math.floor(Math.random() * COLS);
+            garbageRow[hole] = null;
+            grid.push(garbageRow);
+        }
+        
         function checkLines() {
             let clearedLines = 0;
             
@@ -898,6 +913,14 @@
                     level = newLevel;
                     levelEl.classList.add('level-up-animation');
                     setTimeout(() => levelEl.classList.remove('level-up-animation'), 500);
+                }
+                
+                // Add garbage lines at level 3+ - every 3 clears adds 1 garbage line
+                if (level >= 3 && clearedLines < 4) {
+                    const garbageChance = (level - 2) * 0.15; // 15% at level 3, 30% at level 4, etc
+                    if (Math.random() < garbageChance) {
+                        addGarbageLine();
+                    }
                 }
                 
                 // Check achievements
