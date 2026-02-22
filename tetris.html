@@ -1073,7 +1073,7 @@
         function gameLoop(timestamp) {
             if (!gameRunning) return;
             
-            const dropSpeed = activePowerups.slowDrop ? 2000 : Math.max(100, 1000 - (level - 1) * 100);
+            const dropSpeed = activePowerups.slowDrop ? 2000 : Math.max(50, 800 - (level - 1) * 80);
             
             if (timestamp - lastDrop > dropSpeed) {
                 if (!movePiece(0, 1)) {
@@ -1332,10 +1332,10 @@
             
             const gamma = event.gamma || 0; // Left/right tilt
             
-            if (gamma < -10 && gamma < lastTiltX - 2) {
+            if (gamma < -30 && gamma < lastTiltX - 2) {
                 movePiece(-1, 0);
                 lastTiltX = gamma;
-            } else if (gamma > 10 && gamma > lastTiltX + 2) {
+            } else if (gamma > 30 && gamma > lastTiltX + 2) {
                 movePiece(1, 0);
                 lastTiltX = gamma;
             } else if (Math.abs(gamma) < 5) {
