@@ -377,6 +377,23 @@
             animation: level-up 0.5s ease-out;
         }
         
+        @keyframes board-shake {
+            0%, 100% { transform: translateX(0); }
+            10% { transform: translateX(-5px) rotate(-0.5deg); }
+            20% { transform: translateX(5px) rotate(0.5deg); }
+            30% { transform: translateX(-4px) rotate(-0.3deg); }
+            40% { transform: translateX(4px) rotate(0.3deg); }
+            50% { transform: translateX(-3px); }
+            60% { transform: translateX(3px); }
+            70% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
+            90% { transform: translateX(-1px); }
+        }
+        
+        .board-shake {
+            animation: board-shake 0.4s ease-out;
+        }
+        
         #tilt-btn {
             position: fixed;
             bottom: 200px;
@@ -904,7 +921,9 @@
             if (clearedLines > 0) {
                 // Score calculation
                 const points = [0, 100, 300, 500, 800];
-                score += points[clearedLines] * level;
+                // Misery mode: reduce scoring at level 6+
+                const scoreMultiplier = level >= 6 ? Math.max(0.3, 1 - (level - 5) * 0.1) : 1;
+                score += Math.floor(points[clearedLines] * level * scoreMultiplier);
                 lines += clearedLines;
                 
                 // Check level up
@@ -921,6 +940,13 @@
                     if (Math.random() < garbageChance) {
                         addGarbageLine();
                     }
+                }
+                
+                // Board shake at level 5+ when clearing 2+ lines
+                if (level >= 5 && clearedLines >= 2) {
+                    gameBoard.classList.remove('board-shake');
+                    void gameBoard.offsetWidth; // Force reflow
+                    gameBoard.classList.add('board-shake');
                 }
                 
                 // Check achievements
