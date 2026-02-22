@@ -1,0 +1,6 @@
+# API Keys and Tokens
+
+## GitHub Token
+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
+Generated: 2026-02-21
+Purpose: GitHub repo access for tetris deployment
